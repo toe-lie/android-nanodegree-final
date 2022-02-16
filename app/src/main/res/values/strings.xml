@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Political Preparedness</string>
+
+    <string name="button_text_upcoming_elections">Upcoming Elections</string>
+    <string name="button_text_find_my_representatives">Find My Representative</string>
+
+    <string name="content_desc_ballot_logo">Ballot Logo</string>
+
+</resources>
