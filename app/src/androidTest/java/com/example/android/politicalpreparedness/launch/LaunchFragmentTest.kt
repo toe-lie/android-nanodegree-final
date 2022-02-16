@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness
+package com.example.android.politicalpreparedness.launch
 
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.Navigation
@@ -9,7 +9,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.android.politicalpreparedness.launch.LaunchFragment
+import com.example.android.politicalpreparedness.R
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.hamcrest.MatcherAssert.assertThat
