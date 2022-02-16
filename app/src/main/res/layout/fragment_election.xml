@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Add node to connect Election ViewModel -->
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.android.politicalpreparedness.election.ElectionsViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -11,6 +16,15 @@
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
         <!-- TODO: Add Upcoming Election Recycler and Header -->
+        <TextView
+            android:id="@+id/upcoming_election_header"
+            android:layout_width="0dp"
+            android:text="@string/label_upcoming_elections"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content"/>
+
 
         <!-- TODO: Add Saved Election Recycler and Header -->
 

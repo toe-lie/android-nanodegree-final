@@ -1,9 +1,12 @@
 package com.example.android.politicalpreparedness.election
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 //TODO: Construct ViewModel and provide election datasource
-class ElectionsViewModel: ViewModel() {
+@HiltViewModel
+class ElectionsViewModel @Inject constructor() : ViewModel() {
 
     //TODO: Create live data val for upcoming elections
 
