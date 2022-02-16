@@ -23,7 +23,7 @@ class ElectionsViewModel @Inject constructor(
     val uiState: StateFlow<ElectionsUiState> = _uiState.asStateFlow()
 
     init {
-        // loadUpcomingElections()
+        loadUpcomingElections()
     }
 
     private fun loadUpcomingElections() {

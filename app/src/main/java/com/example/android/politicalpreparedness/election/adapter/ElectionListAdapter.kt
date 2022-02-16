@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.politicalpreparedness.databinding.ViewHolderElectionBinding
 import com.example.android.politicalpreparedness.models.Election
 
-class ElectionListAdapter(private val clickListener: ElectionListener) :
+class ElectionListAdapter(private val itemClickListener: ElectionItemClickListener) :
     ListAdapter<Election, ElectionViewHolder>(ElectionDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ElectionViewHolder {
-        return ElectionViewHolder.from(parent)
+        return ElectionViewHolder.from(parent, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: ElectionViewHolder, position: Int) {
@@ -21,28 +21,33 @@ class ElectionListAdapter(private val clickListener: ElectionListener) :
     }
 }
 
-class ElectionViewHolder(val binding: ViewHolderElectionBinding) :
+class ElectionViewHolder(
+    private val binding: ViewHolderElectionBinding,
+    private val itemClickListener: ElectionItemClickListener
+) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Election) {
         binding.election = item
+        binding.itemClickListener = itemClickListener
         binding.executePendingBindings()
     }
 
     companion object {
-        fun from(parent: ViewGroup): ElectionViewHolder {
+        fun from(
+            parent: ViewGroup,
+            itemClickListener: ElectionItemClickListener
+        ): ElectionViewHolder {
             val binding = ViewHolderElectionBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-            return ElectionViewHolder(binding)
+            return ElectionViewHolder(binding, itemClickListener)
         }
     }
 }
 
-
-//TODO: Create ElectionDiffCallback
 class ElectionDiffCallback : DiffUtil.ItemCallback<Election>() {
     override fun areItemsTheSame(oldItem: Election, newItem: Election): Boolean {
         return oldItem.id == newItem.id
@@ -54,7 +59,6 @@ class ElectionDiffCallback : DiffUtil.ItemCallback<Election>() {
 
 }
 
-//TODO: Create ElectionListener
-interface ElectionListener {
-
+interface ElectionItemClickListener {
+    fun onItemClick(election: Election)
 }
