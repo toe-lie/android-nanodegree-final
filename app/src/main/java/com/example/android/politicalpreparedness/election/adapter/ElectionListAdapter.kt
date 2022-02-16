@@ -5,12 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.politicalpreparedness.R
-import com.example.android.politicalpreparedness.databinding.ViewHolderRepresentativeBinding
 import com.example.android.politicalpreparedness.databinding.ViewHolderElectionBinding
-import com.example.android.politicalpreparedness.network.models.Election
-import com.example.android.politicalpreparedness.representative.adapter.RepresentativeViewHolder
-import com.example.android.politicalpreparedness.representative.model.Representative
+import com.example.android.politicalpreparedness.models.Election
 
 class ElectionListAdapter(private val clickListener: ElectionListener) :
     ListAdapter<Election, ElectionViewHolder>(ElectionDiffCallback()) {

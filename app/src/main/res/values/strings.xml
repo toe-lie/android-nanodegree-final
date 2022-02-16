@@ -2,6 +2,9 @@
 <resources>
     <string name="app_name">Political Preparedness</string>
 
+    <string name="error_internet_connection">Please check your internet connection and try again.</string>
+    <string name="error_internet_connection_short">No Internet Connection!</string>
+
     <string name="button_text_upcoming_elections">Upcoming Elections</string>
     <string name="button_text_find_my_representatives">Find My Representative</string>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     android:label="nav_graph"
-    app:startDestination="@id/launchFragment">
+    app:startDestination="@id/electionsFragment">
     <fragment
         android:id="@+id/launchFragment"
         android:name="com.example.android.politicalpreparedness.launch.LaunchFragment"
@@ -31,7 +31,7 @@
             app:argType="integer" />
         <argument
             android:name="arg_division"
-            app:argType="com.example.android.politicalpreparedness.network.models.Division" />
+            app:argType="com.example.android.politicalpreparedness.models.Division" />
     </fragment>
     <fragment
         android:id="@+id/electionsFragment"

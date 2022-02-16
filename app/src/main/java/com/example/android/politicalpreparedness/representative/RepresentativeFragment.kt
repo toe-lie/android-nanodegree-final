@@ -8,7 +8,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.models.Address
 import java.util.Locale
 
 class DetailFragment : Fragment() {
