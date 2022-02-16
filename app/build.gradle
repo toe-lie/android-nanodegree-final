@@ -9,6 +9,7 @@ apply plugin: 'dagger.hilt.android.plugin'
 android {
     compileSdkVersion 32
     buildFeatures {
+        viewBinding true
         dataBinding true
     }
     defaultConfig {
