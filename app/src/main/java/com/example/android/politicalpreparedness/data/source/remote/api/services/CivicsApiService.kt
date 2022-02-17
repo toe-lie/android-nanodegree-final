@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.data.source.remote.api.services
 
 import com.example.android.politicalpreparedness.models.ElectionResponse
+import com.example.android.politicalpreparedness.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.models.VoterInfoResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -23,4 +24,8 @@ interface CivicsApiService {
     ): VoterInfoResponse
 
     //TODO: Add representatives API Call
+    @GET("representatives")
+    suspend fun representatives(
+        @Query("address") address: String,
+    ): RepresentativeResponse
 }
