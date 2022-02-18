@@ -12,10 +12,11 @@
             type="com.example.android.politicalpreparedness.representative.RepresentativeViewModel" />
     </data>
 
-    <!-- TODO: Add motion scene to hide form on vertical scroll. -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/fragment_representative_scene">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/start_guideline"
@@ -31,130 +32,135 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/spacing_normal" />
 
-        <!-- TODO: Add visual styling and content -->
-        <TextView
-            android:id="@+id/search_title"
+        <LinearLayout
+            android:id="@+id/search_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/label_representative_search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
-        <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/address_line_1_text_input_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_address_line_1"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_title">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/address_line_1_text_input_edit_text"
+            app:layout_constraintTop_toTopOf="parent">
+            <!-- TODO: Add visual styling and content -->
+            <TextView
+                android:id="@+id/search_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:inputType="textPostalAddress"
-                android:text="@={viewModel.addressLine1}" />
+                android:text="@string/label_representative_search"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
-        <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/address_line_2_text_input_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_address_line_2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/address_line_1_text_input_layout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/address_line_2_text_input_edit_text"
+            <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
+            <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/address_line_1_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:inputType="textPostalAddress"
-                android:text="@={viewModel.addressLine2}" />
+                android:hint="@string/hint_address_line_1">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_line_1_text_input_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:inputType="textPostalAddress"
+                    android:text="@={viewModel.addressLine1}" />
 
-        <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
-        <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/city_text_input_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_city"
-            app:layout_constraintEnd_toStartOf="@+id/state"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/address_line_2_text_input_layout">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/address_line_2_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:inputType="textPostalAddress"
-                android:text="@={viewModel.city}"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:hint="@string/hint_address_line_2">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_line_2_text_input_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:inputType="textPostalAddress"
+                    android:text="@={viewModel.addressLine2}" />
 
-        <!--        &lt;!&ndash; TODO: Add default values from provided resources  &ndash;&gt;-->
-        <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
-        <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
-        <Spinner
-            android:id="@+id/state"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:autofillHints=""
-            android:inputType="textPostalAddress"
-            app:layout_constraintBottom_toBottomOf="@id/city_text_input_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/city_text_input_layout"
-            app:layout_constraintTop_toTopOf="@id/city_text_input_layout" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
-        <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/zip_text_input_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_zip"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/state">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/zip_text_input_edit_text"
+            <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
+            <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:inputType="number"
-                android:maxLength="5"
-                android:text="@={viewModel.zip}" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <!--        &lt;!&ndash; TODO: Add visual styling and label &ndash;&gt;-->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/search_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_text_find_my_representatives"
-            app:layout_constraintTop_toBottomOf="@id/zip_text_input_layout" />
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-        <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/use_my_location_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_text_use_my_location"
-            app:layout_constraintTop_toBottomOf="@id/search_button" />
+                <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
+                <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/city_text_input_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_city">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:inputType="textPostalAddress"
+                        android:text="@={viewModel.city}"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <!--        &lt;!&ndash; TODO: Add default values from provided resources  &ndash;&gt;-->
+                <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
+                <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
+                <Spinner
+                    android:id="@+id/state"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autofillHints=""
+                    android:inputType="textPostalAddress" />
+
+            </LinearLayout>
+
+
+            <!--        &lt;!&ndash; TODO: Add data binding value &ndash;&gt;-->
+            <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/zip_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_zip"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/state">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/zip_text_input_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:text="@={viewModel.zip}" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--        &lt;!&ndash; TODO: Add visual styling and label &ndash;&gt;-->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/search_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_text_find_my_representatives"
+                app:layout_constraintTop_toBottomOf="@id/zip_text_input_layout" />
+
+            <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/use_my_location_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_text_use_my_location"
+                app:layout_constraintTop_toBottomOf="@id/search_button" />
+
+        </LinearLayout>
 
         <!--        &lt;!&ndash; TODO: Add visual styling and content &ndash;&gt;-->
         <TextView
@@ -163,7 +169,7 @@
             android:layout_height="wrap_content"
             android:text="@string/label_my_representatives"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/use_my_location_button" />
+            app:layout_constraintTop_toBottomOf="@id/search_container" />
 
         <!--        &lt;!&ndash; TODO: Add Representatives RecyclerView &ndash;&gt;-->
 
@@ -179,16 +185,5 @@
             app:layout_constraintTop_toBottomOf="@id/representative_title"
             tools:listitem="@layout/view_holder_representative" />
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/list_placeholder"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:gravity="center"-->
-        <!--            android:textAlignment="center"-->
-        <!--            android:visibility="gone"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/representative_title"-->
-        <!--            motion:visibilityMode="ignore" />-->
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
