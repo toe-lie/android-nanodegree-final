@@ -22,10 +22,10 @@
     <!-- string resources used in VoterInfo screen -->
     <string name="label_election_information">Election Information</string>
     <string name="html_format_voting_locations">
-         <![CDATA[<a href="%1$s">Voting Locations</a>.]]>
+         <![CDATA[<a href="%1$s">Voting Locations</a>]]>
     </string>
     <string name="html_format_ballot_information">
-         <![CDATA[<a href="%1$s">Ballot Information</a>.]]>
+         <![CDATA[<a href="%1$s">Ballot Information</a>]]>
     </string>
     <string name="label_address">Address</string>
     <string name="button_text_follow_election">Follow Election</string>
