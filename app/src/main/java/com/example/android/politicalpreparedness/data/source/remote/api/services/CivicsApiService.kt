@@ -12,18 +12,15 @@ import retrofit2.http.Query
  */
 
 interface CivicsApiService {
-    //TODO: Add elections API Call
     @GET("elections")
     suspend fun elections(): ElectionResponse
 
-    //TODO: Add voterinfo API Call
     @GET("voterinfo")
     suspend fun voterInfo(
         @Query("address") address: String,
         @Query("electionId") electionId: Int
     ): VoterInfoResponse
 
-    //TODO: Add representatives API Call
     @GET("representatives")
     suspend fun representatives(
         @Query("address") address: String,

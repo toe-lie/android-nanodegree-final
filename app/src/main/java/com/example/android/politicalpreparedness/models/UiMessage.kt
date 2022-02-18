@@ -5,6 +5,8 @@ import androidx.annotation.StringRes
 import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.data.source.remote.api.interceptors.NoConnectivityException
+import okio.IOException
+import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -40,16 +42,19 @@ fun UiMessage(
         is SocketTimeoutException, is UnknownHostException, is ConnectException -> {
             UiMessage.ResourceMessage(id = id, message = R.string.error_internet_connection)
         }
+        is HttpException -> {
+            if (t.code() == 404) {
+                UiMessage.ResourceMessage(id = id, message = R.string.error_not_found)
+            } else {
+                UiMessage.ResourceMessage(id = id, message = R.string.error_unknown)
+            }
+        }
         else -> {
             if (BuildConfig.DEBUG) {
-                UiMessage.ResourceMessage(
-                    message = R.string.error_unknown,
+                UiMessage.StringMessage(
+                    message = t.message ?: "Error occurred: $t",
                     id = id,
                 )
-//                UiMessage.StringMessage(
-//                    message = t.message ?: "Error occurred: $t",
-//                    id = id,
-//                )
             } else {
                 UiMessage.ResourceMessage(
                     message = R.string.error_unknown,

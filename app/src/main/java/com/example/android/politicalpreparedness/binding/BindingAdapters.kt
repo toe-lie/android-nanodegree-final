@@ -36,7 +36,7 @@ fun isLoading(view: ImageView, isLoading: Boolean? = false) {
     val animatable = view.drawable as
             android.graphics.drawable.Animatable
     if (isLoading == true) {
-        animatable.start()
+        animatable.stop()
     } else {
         animatable.stop()
     }

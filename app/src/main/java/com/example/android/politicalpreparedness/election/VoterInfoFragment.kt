@@ -10,30 +10,6 @@ import com.example.android.politicalpreparedness.util.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-//class VoterInfoFragment : Fragment() {
-//
-//    override fun onCreateView(inflater: LayoutInflater,
-//                              container: ViewGroup?,
-//                              savedInstanceState: Bundle?): View? {
-//
-//
-//
-//        //TODO: Populate voter info -- hide views without provided data.
-//        /**
-//        Hint: You will need to ensure proper data is provided from previous fragment.
-//        */
-//
-//
-//        //TODO: Handle loading of URLs
-//
-//        //TODO: Handle save button UI state
-//        //TODO: cont'd Handle save button clicks
-//        return TextView(requireContext())
-//    }
-//
-//    //TODO: Create method to load URL intents
-//
-//}
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class VoterInfoFragment : Fragment() {
@@ -66,7 +42,7 @@ class VoterInfoFragment : Fragment() {
     }
 
     private fun setupUi() {
-     setupClickListeners()
+        setupClickListeners()
     }
 
     private fun setupClickListeners() {

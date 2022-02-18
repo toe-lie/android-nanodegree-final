@@ -2,11 +2,14 @@
 <resources>
     <string name="app_name">Political Preparedness</string>
 
+    <!-- Common string resources -->
     <string name="error_unknown">Oops! Something went wrong. Please try again later.</string>
     <string name="error_internet_connection">Please check your internet connection and try again.</string>
     <string name="error_internet_connection_short">No Internet Connection!</string>
+    <string name="error_not_found">No Information!</string>
     <string name="button_text_retry">Retry</string>
 
+    <!-- string resources used in Election screen -->
     <string name="button_text_upcoming_elections">Upcoming Elections</string>
     <string name="button_text_find_my_representatives">Find My Representative</string>
     <string name="button_text_use_my_location">Use My Location</string>
@@ -20,6 +23,7 @@
     <string name="label_upcoming_elections_empty">No Upcoming Elections</string>
     <string name="label_saved_elections_empty_title">No Saved Elections</string>
     <string name="label_saved_elections_empty_message">Follow an election and it will show up here.</string>
+
     <!-- string resources used in VoterInfo screen -->
     <string name="label_election_information">Election Information</string>
     <string name="html_format_voting_locations">
@@ -34,11 +38,13 @@
 
     <!-- string resources used in Representative screen -->
     <string name="label_representative_search">Representative Search</string>
+    <string name="label_representative_result_not_found">No Representatives in this area</string>
     <string name="hint_address_line_1">Address Line 1</string>
     <string name="hint_address_line_2">Address Line 2</string>
     <string name="hint_city">City</string>
     <string name="hint_state">State</string>
     <string name="hint_zip">Zip</string>
+    <string name="error_input_required">Required</string>
     <string name="label_my_representatives">My Representatives</string>
     <string name="snackbar_text_permission_denied_explanation">You need to grant location permission in order to select the location.</string>
     <string name="snackbar_action_settings">Settings</string>

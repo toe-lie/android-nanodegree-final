@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.data.repository.RepresentativeRepository
 import com.example.android.politicalpreparedness.models.Address
 import com.example.android.politicalpreparedness.models.Representative
+import com.example.android.politicalpreparedness.models.UiMessage
 import com.example.android.politicalpreparedness.util.extensions.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,24 +26,6 @@ class RepresentativeViewModel @Inject constructor(
     private val representativeRepository: RepresentativeRepository
 ) : ViewModel() {
 
-    //TODO: Establish live data for representatives and address
-
-    //TODO: Create function to fetch representatives from API from a provided address
-
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
-
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
-
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
-
-     */
-
-    //TODO: Create function get address from geo location
-
-    //TODO: Create function to get address from individual fields
     val addressLine1 = MutableStateFlow("")
     val addressLine2 = MutableStateFlow("")
     val city = MutableStateFlow("")
@@ -50,10 +34,6 @@ class RepresentativeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(RepresentativeUiState.Empty)
     val uiState: StateFlow<RepresentativeUiState> = _uiState.asStateFlow()
-
-    init {
-        searchRepresentatives()
-    }
 
     fun setRequestingLocationUpdates(requesting: Boolean) {
         savedStateHandle[SAVED_STATE_KEY_REQUESTING] = requesting
@@ -72,15 +52,29 @@ class RepresentativeViewModel @Inject constructor(
     }
 
     private fun searchRepresentatives() {
-        Log.d(TAG, "searchRepresentatives: Loading")
+        if (state.value.isEmpty() || city.value.isEmpty()) {
+            return
+        }
+
         viewModelScope.launch {
+            markAsSearched()
+            updateLoadingUiState(true)
+            updateLoadingErrorUiState(null)
             try {
-                val representatives = representativeRepository.getRepresentatives("Montana", "us")
+                val representatives =
+                    representativeRepository.getRepresentatives(state.value, city.value)
                 updateUiState(representatives)
+                updateLoadingUiState(false)
             } catch (e: Exception) {
-                Log.e(TAG, "searchRepresentatives: Error: ${e.message}")
-                e.printStackTrace()
+                updateLoadingUiState(false)
+                updateLoadingErrorUiState(e)
             }
+        }
+    }
+
+    private fun markAsSearched() {
+        _uiState.update {
+            it.copy(searched = true)
         }
     }
 
@@ -91,7 +85,56 @@ class RepresentativeViewModel @Inject constructor(
     }
 
     fun search() {
+        val isAllInputValid = validateInputs()
+        if (isAllInputValid) {
+            searchRepresentatives()
+        }
+    }
 
+    private fun validateInputs(): Boolean {
+        var isAllInputValid = true
+
+        if (city.value.isEmpty()) {
+            _uiState.update {
+                it.copy(cityValidationError = UiMessage.ResourceMessage(message = R.string.error_input_required))
+            }
+            isAllInputValid = false
+        } else {
+            _uiState.update {
+                it.copy(cityValidationError = null)
+            }
+        }
+
+        if (state.value.isEmpty()) {
+            _uiState.update {
+                it.copy(stateValidationError = UiMessage.ResourceMessage(message = R.string.error_input_required))
+            }
+            isAllInputValid = false
+        } else {
+            _uiState.update {
+                it.copy(stateValidationError = null)
+            }
+        }
+
+        return isAllInputValid
+    }
+
+    fun retry() {
+        searchRepresentatives()
+    }
+
+    private fun updateLoadingUiState(loading: Boolean) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(isLoading = loading)
+        }
+    }
+
+    private fun updateLoadingErrorUiState(e: Exception?) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                loadingError = if (e == null) null else UiMessage(e)
+            )
+        }
     }
 
 }

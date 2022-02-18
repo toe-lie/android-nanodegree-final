@@ -14,69 +14,40 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.Fragment
-import com.example.android.politicalpreparedness.models.Address
-import java.util.Locale
-//
-//class RepresentativeFragment : Fragment() {
-//
-//    companion object {
-//        //TODO: Add Constant for Location request
-//    }
-//
-//    //TODO: Declare ViewModel
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//
-//        //TODO: Establish bindings
-//
-//        //TODO: Define and assign Representative adapter
-//
-//        //TODO: Populate Representative adapter
-//
-//        //TODO: Establish button listeners for field and location search
-//        return TextView(requireContext())
-//
-//    }
-//
-//
-
-//
-//}
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
+import com.example.android.politicalpreparedness.models.Address
+import com.example.android.politicalpreparedness.models.UiMessage
+import com.example.android.politicalpreparedness.models.resolveMessage
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.example.android.politicalpreparedness.util.autoCleared
 import com.example.android.politicalpreparedness.util.extensions.TAG
 import com.example.android.politicalpreparedness.util.extensions.launchAndRepeatWithViewLifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.*
 
-private val LOCATION_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
+private const val LOCATION_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
 
 @AndroidEntryPoint
 class RepresentativeFragment : Fragment() {
@@ -100,7 +71,7 @@ class RepresentativeFragment : Fragment() {
     private val resolutionLauncher =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                Toast.makeText(requireContext(), "Resolve ok", Toast.LENGTH_SHORT).show()
+                checkLocationPermissions()
             }
         }
 
@@ -130,6 +101,7 @@ class RepresentativeFragment : Fragment() {
 
     private fun setupUi() {
         setupList()
+        setupStateDropdown()
         setupClickListeners()
     }
 
@@ -142,12 +114,34 @@ class RepresentativeFragment : Fragment() {
                     adapter.submitList(list)
                 }
             }
+            launch {
+                viewModel.state.collect {
+                    (binding.stateDropdownInputLayout.editText as? AutoCompleteTextView)?.setText(
+                        it,
+                        false
+                    )
+                }
+            }
         }
     }
 
     private fun setupList() {
         adapter = RepresentativeListAdapter()
         binding.representativeRecyclerView.adapter = adapter
+    }
+
+    private fun setupStateDropdown() {
+        val items = resources.getStringArray(R.array.states)
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_list_item, items)
+        val textview = (binding.stateDropdownInputLayout.editText as? AutoCompleteTextView)
+        if (textview != null) {
+            textview.setAdapter(adapter)
+            textview.setOnItemClickListener { _, _, position, id ->
+                val selectedItem = adapter.getItem(position)
+                viewModel.state.value = selectedItem.orEmpty()
+            }
+        }
+
     }
 
     private fun setupClickListeners() {
