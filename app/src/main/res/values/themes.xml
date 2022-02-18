@@ -36,7 +36,7 @@
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
     </style>
 
-    <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.Material3.DayNight">
 
     </style>
 
