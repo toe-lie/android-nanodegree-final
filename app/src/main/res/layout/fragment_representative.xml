@@ -11,22 +11,21 @@
             type="com.example.android.politicalpreparedness.representative.RepresentativeViewModel" />
     </data>
 
-
-    <!--    app:layoutDescription="@xml/fragment_representative_scene"-->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingStart="@dimen/spacing_normal"
-        android:paddingTop="@dimen/spacing_small"
-        android:paddingEnd="@dimen/spacing_normal">
+        android:paddingEnd="@dimen/spacing_normal"
+        app:layoutDescription="@xml/fragment_representative_scene">
 
         <LinearLayout
             android:id="@+id/search_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="@dimen/spacing_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -239,5 +238,5 @@
             app:visibleGone="@{viewModel.uiState.isListEmpty}"
             tools:visibility="visible" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
