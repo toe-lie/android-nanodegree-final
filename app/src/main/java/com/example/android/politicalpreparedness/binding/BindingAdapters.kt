@@ -4,8 +4,6 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.StringRes
-import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import androidx.databinding.BindingAdapter
@@ -27,8 +25,19 @@ fun html(view: TextView, htmlText: String?) {
 }
 
 @BindingAdapter("uiMessage")
-fun uiMessage(view: TextView, uiMesssage: UiMessage?) {
-    uiMesssage?.let {
-        view.text = uiMesssage.resolveMessage(view.context)
+fun uiMessage(view: TextView, uiMessage: UiMessage?) {
+    uiMessage?.let {
+        view.text = uiMessage.resolveMessage(view.context)
+    }
+}
+
+@BindingAdapter("isLoading")
+fun isLoading(view: ImageView, isLoading: Boolean? = false) {
+    val animatable = view.drawable as
+            android.graphics.drawable.Animatable
+    if (isLoading == true) {
+        animatable.start()
+    } else {
+        animatable.stop()
     }
 }

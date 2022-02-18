@@ -81,16 +81,17 @@
                     tools:itemCount="3"
                     tools:listitem="@layout/view_holder_election" />
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
+                <ImageView
                     android:id="@+id/upcoming_elections_loading_indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    android:visibility="visible"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:contentDescription="@string/content_desc_loading_image"
+                    app:isLoading="@{viewModel.uiState.isLoadingUpcomingElections}"
                     app:layout_constraintBottom_toBottomOf="@id/upcoming_election_recycler_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/upcoming_election_recycler_view"
+                    app:srcCompat="@drawable/loading_animation"
                     app:visibleGone="@{viewModel.uiState.isLoadingUpcomingElections}" />
 
                 <com.google.android.material.button.MaterialButton

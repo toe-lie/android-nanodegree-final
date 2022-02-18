@@ -12,6 +12,7 @@
     <string name="button_text_use_my_location">Use My Location</string>
 
     <string name="content_desc_ballot_logo">Ballot Logo</string>
+    <string name="content_desc_loading_image">Loading</string>
 
     <string name="label_upcoming_elections">Upcoming Elections</string>
     <string name="label_saved_elections">Saved Elections</string>

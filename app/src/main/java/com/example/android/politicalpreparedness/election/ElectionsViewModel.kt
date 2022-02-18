@@ -58,7 +58,7 @@ class ElectionsViewModel @Inject constructor(
 
     private fun updateUpcomingElectionsLoadingUiState(loading: Boolean) {
         _uiState.update { currentUiState ->
-            currentUiState.copy(loading)
+            currentUiState.copy(isLoadingUpcomingElections = loading)
         }
     }
 

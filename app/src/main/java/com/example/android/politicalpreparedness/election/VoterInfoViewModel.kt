@@ -1,13 +1,12 @@
 package com.example.android.politicalpreparedness.election
 
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.android.politicalpreparedness.data.repository.ElectionRepository
 import com.example.android.politicalpreparedness.data.repository.VoterRepository
 import com.example.android.politicalpreparedness.models.Division
+import com.example.android.politicalpreparedness.models.UiMessage
 import com.example.android.politicalpreparedness.models.VoterInfoResponse
-import com.example.android.politicalpreparedness.util.extensions.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,20 +44,22 @@ class VoterInfoViewModel @Inject constructor(
     private fun observeIsFollowing(electionId: Int) {
         viewModelScope.launch {
             electionRepository.observeIsFollowing(electionId).collectLatest {
-                updateUiState(it)
+                updateIsFollowingUiState(it)
             }
         }
     }
 
     private fun loadVoterInfo(query: Query) {
         viewModelScope.launch {
-            Log.d(TAG, "loadVoterInfo: Loading: $query")
+            updatingLoadingUiState(true)
+            updateLoadingErrorUiState(null)
             try {
                 val voterInfo = voterRepository.getVoterInfo(query.division, query.electionId)
-                updateUiState(voterInfo)
-                Log.d(TAG, "loadVoterInfo: Success: Query: $query; VoterInfo: $voterInfo")
+                updateVoterInfoUiState(voterInfo)
+                updatingLoadingUiState(false)
             } catch (e: Exception) {
-                Log.e(TAG, "loadVoterInfo: error: $e")
+                updatingLoadingUiState(false)
+                updateLoadingErrorUiState(e)
             }
         }
     }
@@ -73,7 +74,7 @@ class VoterInfoViewModel @Inject constructor(
         savedStateHandle[SAVED_STATE_KEY_QUERY] = updated
     }
 
-    private fun updateUiState(voterInfo: VoterInfoResponse) {
+    private fun updateVoterInfoUiState(voterInfo: VoterInfoResponse) {
         _uiState.update { currentUiState ->
             val electionAdministrationBody =
                 voterInfo.state?.getOrNull(0)?.electionAdministrationBody
@@ -90,9 +91,23 @@ class VoterInfoViewModel @Inject constructor(
         }
     }
 
-    private fun updateUiState(isFollowing: Boolean) {
+    private fun updateIsFollowingUiState(isFollowing: Boolean) {
         _uiState.update { currentUiState ->
             currentUiState.copy(isFollowing = isFollowing)
+        }
+    }
+
+    private fun updatingLoadingUiState(loading: Boolean) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(isLoading = loading)
+        }
+    }
+
+    private fun updateLoadingErrorUiState(e: Exception?) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                loadingError = if (e == null) null else UiMessage(e)
+            )
         }
     }
 
@@ -104,8 +119,16 @@ class VoterInfoViewModel @Inject constructor(
         }
     }
 
+    fun retry() {
+        viewModelScope.launch {
+            _query.firstOrNull()?.let {
+                loadVoterInfo(it)
+            }
+        }
+    }
+
     @Parcelize
     data class Query(val electionId: Int, val division: Division) : Parcelable
 }
 
-private val SAVED_STATE_KEY_QUERY = "keys.Query"
+private const val SAVED_STATE_KEY_QUERY = "keys.Query"
