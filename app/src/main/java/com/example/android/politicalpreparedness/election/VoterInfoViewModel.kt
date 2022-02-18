@@ -3,8 +3,8 @@ package com.example.android.politicalpreparedness.election
 import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.android.politicalpreparedness.data.repository.ElectionRepository
 import com.example.android.politicalpreparedness.data.repository.VoterRepository
-import com.example.android.politicalpreparedness.data.source.local.db.daos.ElectionDao
 import com.example.android.politicalpreparedness.models.Division
 import com.example.android.politicalpreparedness.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.util.extensions.TAG
@@ -19,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class VoterInfoViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val voterRepository: VoterRepository
+    private val voterRepository: VoterRepository,
+    private val electionRepository: ElectionRepository
 ) : ViewModel() {
 
     private val _query: Flow<Query> =
@@ -36,6 +37,15 @@ class VoterInfoViewModel @Inject constructor(
         viewModelScope.launch {
             _query.collectLatest {
                 loadVoterInfo(it)
+                observeIsFollowing(it.electionId)
+            }
+        }
+    }
+
+    private fun observeIsFollowing(electionId: Int) {
+        viewModelScope.launch {
+            electionRepository.observeIsFollowing(electionId).collectLatest {
+                updateUiState(it)
             }
         }
     }
@@ -79,19 +89,20 @@ class VoterInfoViewModel @Inject constructor(
             }
         }
     }
-    //TODO: Add live data to hold voter info
 
-    //TODO: Add var and methods to populate voter info
+    private fun updateUiState(isFollowing: Boolean) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(isFollowing = isFollowing)
+        }
+    }
 
-    //TODO: Add var and methods to support loading URLs
-
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
-
+    fun toggleFollowing() {
+        viewModelScope.launch {
+            _uiState.value.election?.let {
+                electionRepository.toggleFollowing(it)
+            }
+        }
+    }
 
     @Parcelize
     data class Query(val electionId: Int, val division: Division) : Parcelable

@@ -7,7 +7,8 @@ data class VoterInfoUiState(
     val election: Election? = null,
     val votingLocationFinderUrl: String = "",
     val ballotInfoUrl: String = "",
-    val address: Address? = null
+    val address: Address? = null,
+    val isFollowing: Boolean = false
 ) {
 
     val showVotingLocation: Boolean = votingLocationFinderUrl.isNotEmpty()

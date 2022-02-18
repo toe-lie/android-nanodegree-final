@@ -15,9 +15,11 @@ interface ElectionDao {
     @Query("SELECT * FROM election_table")
     fun observeAll(): Flow<List<Election>>
 
-    //TODO: Add select single election query
-    @Query("SELECT * FROM election_table WHERE id = :id") //TODO: add query
-    fun observeById(id: Int): Flow<Election>
+    @Query("SELECT * FROM election_table WHERE id = :id")
+    fun observeById(id: Int): Flow<Election?>
+
+    @Query("SELECT * FROM election_table WHERE id = :id")
+    fun getById(id: Int): Election?
 
     //TODO: Add delete query
     @Query("DELETE FROM election_table WHERE id = :id")

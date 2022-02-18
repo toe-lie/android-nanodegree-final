@@ -2,10 +2,8 @@ package com.example.android.politicalpreparedness.election
 
 import android.os.Bundle
 import android.view.*
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.navArgs
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
 import com.example.android.politicalpreparedness.util.autoCleared
@@ -59,7 +57,6 @@ class VoterInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         setupUi()
-        observeActions()
     }
 
     private fun initViewModel() {
@@ -68,8 +65,14 @@ class VoterInfoFragment : Fragment() {
         viewModel.setQuery(args.argElectionId, args.argDivision)
     }
 
-    private fun setupUi() {}
+    private fun setupUi() {
+     setupClickListeners()
+    }
 
-    private fun observeActions() {}
+    private fun setupClickListeners() {
+        binding.followButton.setOnClickListener {
+            viewModel.toggleFollowing()
+        }
+    }
 
 }

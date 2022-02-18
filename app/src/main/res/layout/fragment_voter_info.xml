@@ -98,7 +98,8 @@
             android:id="@+id/follow_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/button_text_follow_election"
+            tools:text="Follow Election"
+            android:text="@{viewModel.uiState.isFollowing ?  @string/button_text_unfollow_election : @string/button_text_follow_election}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
