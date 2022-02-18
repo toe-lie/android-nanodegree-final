@@ -5,12 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.data.repository.ElectionRepository
 import com.example.android.politicalpreparedness.models.Election
+import com.example.android.politicalpreparedness.models.UiMessage
 import com.example.android.politicalpreparedness.util.extensions.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,21 +22,43 @@ class ElectionsViewModel @Inject constructor(
 
     init {
         loadUpcomingElections()
+        loadSavedElections()
     }
 
     private fun loadUpcomingElections() {
         viewModelScope.launch {
-            Log.d(TAG, "loadUpcomingElections: Loading")
+            updateUpcomingElectionsLoadingErrorUiState(null)
+            updateUpcomingElectionsLoadingUiState(true)
             try {
                 val upcomingElections = electionRepository.getUpcomingElections()
-                Log.d(TAG, "loadUpcomingElections: Result: ${upcomingElections.size}")
                 updateUpcomingElectionsUiState(upcomingElections)
+                updateUpcomingElectionsLoadingUiState(false)
             } catch (e: Exception) {
-                //TODO:
-                Log.e(TAG, "loadUpcomingElections: Error: ${e}")
-                e.printStackTrace()
+                updateUpcomingElectionsLoadingErrorUiState(e)
+                updateUpcomingElectionsLoadingUiState(false)
             }
+        }
+    }
 
+    private fun updateUpcomingElectionsLoadingErrorUiState(e: Exception?) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                upcomingElectionsLoadingError = if (e == null) null else UiMessage(e)
+            )
+        }
+    }
+
+    private fun loadSavedElections() {
+        viewModelScope.launch {
+            electionRepository.observeSavedElections().collect {
+                updateSavedElectionsUiState(it)
+            }
+        }
+    }
+
+    private fun updateUpcomingElectionsLoadingUiState(loading: Boolean) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(loading)
         }
     }
 
@@ -48,12 +68,13 @@ class ElectionsViewModel @Inject constructor(
         }
     }
 
-    //TODO: Create live data val for upcoming elections
+    private fun updateSavedElectionsUiState(savedElections: List<Election>) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(savedElections = savedElections)
+        }
+    }
 
-    //TODO: Create live data val for saved elections
-
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
-
-    //TODO: Create functions to navigate to saved or upcoming election voter info
-
+    fun retryUpcomingElections() {
+        loadUpcomingElections()
+    }
 }

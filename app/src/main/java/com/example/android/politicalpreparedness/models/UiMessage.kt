@@ -2,6 +2,7 @@ package com.example.android.politicalpreparedness.models
 
 import android.content.Context
 import androidx.annotation.StringRes
+import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.data.source.remote.api.interceptors.NoConnectivityException
 import java.net.ConnectException
@@ -40,10 +41,21 @@ fun UiMessage(
             UiMessage.ResourceMessage(id = id, message = R.string.error_internet_connection)
         }
         else -> {
-            UiMessage.StringMessage(
-                message = t.message ?: "Error occurred: $t",
-                id = id,
-            )
+            if (BuildConfig.DEBUG) {
+                UiMessage.ResourceMessage(
+                    message = R.string.error_unknown,
+                    id = id,
+                )
+//                UiMessage.StringMessage(
+//                    message = t.message ?: "Error occurred: $t",
+//                    id = id,
+//                )
+            } else {
+                UiMessage.ResourceMessage(
+                    message = R.string.error_unknown,
+                    id = id,
+                )
+            }
         }
     }
 }

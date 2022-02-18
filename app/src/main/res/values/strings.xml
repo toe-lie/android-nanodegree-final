@@ -2,8 +2,10 @@
 <resources>
     <string name="app_name">Political Preparedness</string>
 
+    <string name="error_unknown">Oops! Something went wrong. Please try again later.</string>
     <string name="error_internet_connection">Please check your internet connection and try again.</string>
     <string name="error_internet_connection_short">No Internet Connection!</string>
+    <string name="button_text_retry">Retry</string>
 
     <string name="button_text_upcoming_elections">Upcoming Elections</string>
     <string name="button_text_find_my_representatives">Find My Representative</string>
@@ -14,6 +16,9 @@
     <string name="label_upcoming_elections">Upcoming Elections</string>
     <string name="label_saved_elections">Saved Elections</string>
 
+    <string name="label_upcoming_elections_empty">No Upcoming Elections</string>
+    <string name="label_saved_elections_empty_title">No Saved Elections</string>
+    <string name="label_saved_elections_empty_message">Follow an election and it will show up here.</string>
     <!-- string resources used in VoterInfo screen -->
     <string name="label_election_information">Election Information</string>
     <string name="html_format_voting_locations">

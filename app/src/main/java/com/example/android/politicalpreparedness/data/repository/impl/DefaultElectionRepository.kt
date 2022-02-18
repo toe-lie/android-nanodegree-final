@@ -18,6 +18,10 @@ class DefaultElectionRepository @Inject constructor(
         return electionRemoteDataSource.getUpcomingElections()
     }
 
+    override suspend fun observeSavedElections(): Flow<List<Election>> {
+        return electionLocalDataSource.observeElections()
+    }
+
     override suspend fun toggleFollowing(election: Election) {
         electionLocalDataSource.toggleFollowing(election)
     }

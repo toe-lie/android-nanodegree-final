@@ -14,6 +14,7 @@ import com.example.android.politicalpreparedness.models.Election
 import com.example.android.politicalpreparedness.util.autoCleared
 import com.example.android.politicalpreparedness.util.extensions.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -51,6 +52,7 @@ class ElectionsFragment : Fragment() {
 
     private fun setupUi() {
         setupUpcomingElectionsList()
+        setupSavedElectionsList()
     }
 
     private fun setupUpcomingElectionsList() {
@@ -62,12 +64,27 @@ class ElectionsFragment : Fragment() {
         binding.upcomingElectionRecyclerView.adapter = upcomingElectionsAdapter
     }
 
+    private fun setupSavedElectionsList() {
+        savedElectionsAdapter = ElectionListAdapter(object : ElectionItemClickListener {
+            override fun onItemClick(election: Election) {
+                navigateToElectionDetailScreen(election)
+            }
+        })
+        binding.savedElectionRecyclerVeiw.adapter = savedElectionsAdapter
+    }
+
     private fun observeViewModel() {
         launchAndRepeatWithViewLifecycle {
             launch {
                 viewModel.uiState.map { it.upcomingElections }.distinctUntilChanged()
                     .collect { list ->
                         upcomingElectionsAdapter.submitList(list)
+                    }
+            }
+            launch {
+                viewModel.uiState.map { it.savedElections }.distinctUntilChanged()
+                    .collect { list ->
+                        savedElectionsAdapter.submitList(list)
                     }
             }
         }

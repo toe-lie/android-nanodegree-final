@@ -14,6 +14,10 @@ class ElectionLocalDataSource @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val electionDao: ElectionDao
 ) {
+    fun observeElections(): Flow<List<Election>> {
+        return electionDao.observeAll().flowOn(ioDispatcher)
+    }
+
     fun observeIsFollowing(electionId: Int): Flow<Boolean> {
         return electionDao.observeById(electionId).map {
             it != null
